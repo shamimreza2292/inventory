@@ -1,0 +1,260 @@
+
+{% block title %}{{ product.name }} - StocketBucket{% endblock %}
+{% block page_title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto" data-product-name="{{ product.name }}">
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <!-- Header -->
+    {% if not is_ajax %}
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 text-white">
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+          <p class="text-blue-100 mt-2">Product Code: <span class="font-mono">{{ product.product_code }}</span></p>
+        </div>
+        <div class="text-right">
+          {% if product.is_active %}
+          <span class="bg-green-400 text-green-900 px-3 py-1 rounded-full text-sm font-semibold">Active</span>
+          {% else %}
+          <span class="bg-red-400 text-red-900 px-3 py-1 rounded-full text-sm font-semibold">Inactive</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <!-- Ajax Header Info -->
+    <div class="px-6 pt-6 flex justify-between items-center border-b pb-4">
+      <div>
+        <p class="text-sm text-gray-500 font-medium">Product Code: <span class="font-mono text-gray-900">{{ product.product_code }}</span></p>
+      </div>
+      <div>
+        {% if product.is_active %}
+        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Active</span>
+        {% else %}
+        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">Inactive</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Product Image & Basic Info -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="md:col-span-1">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-64 object-cover rounded-lg border border-gray-200">
+          {% else %}
+          <div class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+            <span class="text-gray-400">No Image</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="md:col-span-2">
+          <!-- Pricing -->
+          <div class="bg-gray-50 rounded-lg p-4 mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Pricing</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-gray-600">Purchase Price</p>
+                <p class="text-2xl font-bold text-gray-900">${{ product.purchase_price }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600">Selling Price</p>
+                <p class="text-2xl font-bold text-green-600">${{ product.selling_price }}</p>
+              </div>
+              {% if product.wholesale_price %}
+              <div>
+                <p class="text-sm text-gray-600">Wholesale Price</p>
+                <p class="text-2xl font-bold text-gray-900">${{ product.wholesale_price }}</p>
+              </div>
+              {% endif %}
+              {% if product.discount %}
+              <div>
+                <p class="text-sm text-gray-600">Discount</p>
+                <p class="text-2xl font-bold text-blue-600">{{ product.discount }}%</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Classification -->
+          <div class="bg-gray-50 rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">Classification</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p class="text-gray-600">Category</p>
+                <p class="font-medium text-gray-900">{{ product.category.name }}</p>
+              </div>
+              {% if product.brand %}
+              <div>
+                <p class="text-gray-600">Brand</p>
+                <p class="font-medium text-gray-900">{{ product.brand.name }}</p>
+              </div>
+              {% endif %}
+              <div>
+                <p class="text-gray-600">Unit</p>
+                <p class="font-medium text-gray-900">{{ product.unit.abbreviation }}</p>
+              </div>
+              {% if product.supplier %}
+              <div>
+                <p class="text-gray-600">Supplier</p>
+                <p class="font-medium text-gray-900">{{ product.supplier.name }}</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      {% if product.description %}
+      <div class="mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+        <p class="text-gray-600 whitespace-pre-line">{{ product.description }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Stock Information -->
+      <div class="bg-gray-50 rounded-lg p-4 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3">Stock Information</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <p class="text-gray-600">Opening Stock</p>
+            <p class="text-xl font-bold text-gray-900">{{ product.opening_stock }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Reorder Level</p>
+            <p class="text-xl font-bold text-gray-900">{{ product.reorder_level }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Maximum Stock</p>
+            <p class="text-xl font-bold text-gray-900">{{ product.maximum_stock }}</p>
+          </div>
+          {% if product.opening_stock_date %}
+          <div>
+            <p class="text-gray-600">Stock Date</p>
+            <p class="text-sm font-medium text-gray-900">{{ product.opening_stock_date|date:"M d, Y" }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Physical Dimensions -->
+      {% if product.weight or product.length or product.width or product.height %}
+      <div class="bg-gray-50 rounded-lg p-4 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3">Physical Dimensions</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          {% if product.weight %}
+          <div>
+            <p class="text-gray-600">Weight</p>
+            <p class="font-medium text-gray-900">{{ product.weight }} kg</p>
+          </div>
+          {% endif %}
+          {% if product.length %}
+          <div>
+            <p class="text-gray-600">Length</p>
+            <p class="font-medium text-gray-900">{{ product.length }} cm</p>
+          </div>
+          {% endif %}
+          {% if product.width %}
+          <div>
+            <p class="text-gray-600">Width</p>
+            <p class="font-medium text-gray-900">{{ product.width }} cm</p>
+          </div>
+          {% endif %}
+          {% if product.height %}
+          <div>
+            <p class="text-gray-600">Height</p>
+            <p class="font-medium text-gray-900">{{ product.height }} cm</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Tracking Options -->
+      <div class="bg-gray-50 rounded-lg p-4 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3">Tracking Options</h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center">
+            {% if product.expiry_tracking %}
+            <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            <span class="text-gray-900">Expiry Tracking: <span class="font-semibold">Enabled</span></span>
+            {% else %}
+            <span class="inline-block w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+            <span class="text-gray-600">Expiry Tracking: Disabled</span>
+            {% endif %}
+          </div>
+          <div class="flex items-center">
+            {% if product.batch_tracking %}
+            <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            <span class="text-gray-900">Batch Tracking: <span class="font-semibold">Enabled</span></span>
+            {% else %}
+            <span class="inline-block w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+            <span class="text-gray-600">Batch Tracking: Disabled</span>
+            {% endif %}
+          </div>
+          <div class="flex items-center">
+            {% if product.serial_tracking %}
+            <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+            <span class="text-gray-900">Serial Tracking: <span class="font-semibold">Enabled</span></span>
+            {% else %}
+            <span class="inline-block w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+            <span class="text-gray-600">Serial Tracking: Disabled</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Metadata -->
+      <div class="bg-gray-50 rounded-lg p-4 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3">Additional Information</h3>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          {% if product.barcode %}
+          <div>
+            <p class="text-gray-600">Barcode</p>
+            <p class="font-mono text-gray-900">{{ product.barcode }}</p>
+          </div>
+          {% endif %}
+          {% if product.warranty_months %}
+          <div>
+            <p class="text-gray-600">Warranty</p>
+            <p class="font-medium text-gray-900">{{ product.warranty_months }} months</p>
+          </div>
+          {% endif %}
+          {% if product.tax_rate %}
+          <div>
+            <p class="text-gray-600">Tax Rate</p>
+            <p class="font-medium text-gray-900">{{ product.tax_rate }}%</p>
+          </div>
+          {% endif %}
+          <div>
+            <p class="text-gray-600">Created</p>
+            <p class="font-medium text-gray-900">{{ product.created_at|date:"M d, Y g:i A" }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Updated</p>
+            <p class="font-medium text-gray-900">{{ product.updated_at|date:"M d, Y g:i A" }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2 justify-end">
+        {% if is_ajax %}
+        <button type="button" class="close-modal-btn px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition">Close</button>
+        <button type="button" class="edit-product-btn px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition" data-url="{% url 'products:update' product.pk %}">Edit Product</button>
+        <button type="button" class="delete-product-btn px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition" data-url="{% url 'products:delete' product.pk %}">Delete Product</button>
+        {% else %}
+        <a href="{% url 'products:list' %}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Back to Products</a>
+        <a href="{% url 'products:update' product.pk %}" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">Edit Product</a>
+        <a href="{% url 'products:delete' product.pk %}" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition">Delete Product</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

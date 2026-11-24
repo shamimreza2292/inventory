@@ -1,0 +1,305 @@
+
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+  <div class="bg-white rounded-lg shadow p-6">
+    <form method="post" action="{% if product %}{% url 'products:update' product.pk %}{% else %}{% url 'products:create' %}{% endif %}" enctype="multipart/form-data" class="space-y-8">
+      {% csrf_token %}
+
+      <!-- Display Form Errors -->
+      {% if form.non_field_errors %}
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+        {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Basic Information Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Basic Information</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.product_code.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Product Code *</label>
+            {{ form.product_code }}
+            {% if form.product_code.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.product_code.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.barcode.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Barcode</label>
+            {{ form.barcode }}
+            {% if form.barcode.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.barcode.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+          {{ form.name }}
+          {% if form.name.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.name.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="mt-4">
+          <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          {{ form.description }}
+          {% if form.description.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.description.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </fieldset>
+
+      <!-- Classification Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Classification</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+            {{ form.category }}
+            {% if form.category.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.category.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.brand.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+            {{ form.brand }}
+            {% if form.brand.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.brand.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.unit.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Unit *</label>
+            {{ form.unit }}
+            {% if form.unit.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.unit.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.supplier.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
+            {{ form.supplier }}
+            {% if form.supplier.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.supplier.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Pricing Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Pricing</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.purchase_price.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Purchase Price *</label>
+            {{ form.purchase_price }}
+            {% if form.purchase_price.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.purchase_price.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.selling_price.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Selling Price *</label>
+            {{ form.selling_price }}
+            {% if form.selling_price.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.selling_price.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.wholesale_price.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Wholesale Price</label>
+            {{ form.wholesale_price }}
+            {% if form.wholesale_price.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.wholesale_price.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.tax_rate.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
+            {{ form.tax_rate }}
+            {% if form.tax_rate.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.tax_rate.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.discount.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Discount (%)</label>
+            {{ form.discount }}
+            {% if form.discount.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.discount.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Stock Management Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Stock Management</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.reorder_level.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Reorder Level</label>
+            {{ form.reorder_level }}
+            {% if form.reorder_level.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.reorder_level.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.maximum_stock.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Maximum Stock</label>
+            {{ form.maximum_stock }}
+            {% if form.maximum_stock.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.maximum_stock.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.opening_stock.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Opening Stock</label>
+            {{ form.opening_stock }}
+            {% if form.opening_stock.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.opening_stock.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.opening_stock_date.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Opening Stock Date</label>
+            {{ form.opening_stock_date }}
+            {% if form.opening_stock_date.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.opening_stock_date.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Physical Dimensions Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Physical Dimensions</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.weight.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+            {{ form.weight }}
+            {% if form.weight.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.weight.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.length.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Length (cm)</label>
+            {{ form.length }}
+            {% if form.length.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.length.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.width.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Width (cm)</label>
+            {{ form.width }}
+            {% if form.width.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.width.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.height.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
+            {{ form.height }}
+            {% if form.height.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.height.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Media & Warranty Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Media & Warranty</legend>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+            {{ form.image }}
+            {% if form.image.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.image.errors.0 }}</p>
+            {% endif %}
+            {% if product.image %}
+            <div class="mt-2">
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-32 w-32 object-cover rounded">
+            </div>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.warranty_months.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Warranty (Months)</label>
+            {{ form.warranty_months }}
+            {% if form.warranty_months.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.warranty_months.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Tracking Options Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Tracking Options</legend>
+        
+        <div class="space-y-3 mt-4">
+          <label class="flex items-center">
+            {{ form.expiry_tracking }}
+            <span class="ml-2 text-sm font-medium text-gray-700">Enable Expiry Tracking</span>
+          </label>
+
+          <label class="flex items-center">
+            {{ form.batch_tracking }}
+            <span class="ml-2 text-sm font-medium text-gray-700">Enable Batch Tracking</span>
+          </label>
+
+          <label class="flex items-center">
+            {{ form.serial_tracking }}
+            <span class="ml-2 text-sm font-medium text-gray-700">Enable Serial Tracking</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Status Section -->
+      <fieldset class="border border-gray-200 rounded-lg p-4">
+        <legend class="text-lg font-semibold text-gray-900 px-2 -mx-2">Status</legend>
+        
+        <label class="flex items-center mt-4">
+          {{ form.is_active }}
+          <span class="ml-2 text-sm font-medium text-gray-700">Product is Active</span>
+        </label>
+      </fieldset>
+
+      <!-- Buttons -->
+      <div class="flex gap-2 justify-end">
+        <button type="button"
+                x-data
+                @click="open = false"
+                class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">Cancel</button>
+<!--        <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">-->
+<!--          {% if product %}Update Product{% else %}Create Product{% endif %}-->
+<!--        </button>-->
+
+        <button
+                hx-post="{% if product %}{% url 'products:update' product.pk %}{% else %}{% url 'products:create' %}{% endif %}"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-target="#product-list"
+                hx-swap="innerHTML"
+
+
+                type="button" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+          {% if product %}Update Product{% else %}Create Product{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

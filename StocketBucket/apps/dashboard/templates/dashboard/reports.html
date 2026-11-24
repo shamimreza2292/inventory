@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Reports - StocketBucket{% endblock %}
+{% block page_title %}Reports{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-xl font-semibold text-gray-900">Reports & Analytics</h1>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+  <div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Sales by Month</h3>
+    <div class="h-64 bg-gray-100 rounded flex items-center justify-center">
+      <p class="text-gray-600">Chart placeholder</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Products</h3>
+    <div class="space-y-3">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700">Product 1</span>
+        <span class="text-gray-900 font-semibold">245 sales</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700">Product 2</span>
+        <span class="text-gray-900 font-semibold">189 sales</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700">Product 3</span>
+        <span class="text-gray-900 font-semibold">156 sales</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white rounded-lg shadow p-6">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Download Reports</h3>
+  <div class="space-y-2">
+    <button class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded transition">📄 Sales Report - June 2026</button>
+    <button class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded transition">📄 Inventory Report - June 2026</button>
+    <button class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded transition">📄 Customer Report - June 2026</button>
+  </div>
+</div>
+{% endblock %}

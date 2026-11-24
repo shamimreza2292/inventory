@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Inventory - Dashboard{% endblock %}</title>
+  {% load static %}
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{% static 'js/htmlx.js' %}" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+  <script defer src="{% static 'js/alpinejs.min.js' %}"></script>
+
+  <style>
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 2px solid #d1d5db;
+      font-size: 0.875rem;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <div class="min-h-screen flex flex-col">
+    <!-- Left Sidebar -->
+    <div class="flex flex-1">
+      <!-- Sidebar Overlay -->
+      <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"></div>
+
+      <aside class="w-64 bg-gray-900 text-white shadow-lg fixed h-full z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+          <h1 class="text-2xl font-bold tracking-wide">StocketBucket</h1>
+          <button id="closeSidebar" class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <nav class="mt-8 px-4">
+          <ul class="space-y-2">
+            <li>
+              <a href="{% url 'dashboard:home' %}" class="flex items-center px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'home' %}bg-blue-600{% else %}hover:bg-gray-800{% endif %} transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9m-9 11l4-4m-4 4L9 17m0 0l-4-4m4 4v-4"></path>
+                </svg>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'products:page' %}" class="flex items-center px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'page' and request.resolver_match.namespace == 'products' %}bg-blue-600{% else %}hover:bg-gray-800{% endif %} transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                Products
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'dashboard:orders' %}" class="flex items-center px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'orders' %}bg-blue-600{% else %}hover:bg-gray-800{% endif %} transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2v-9a2 2 0 012-2z"></path>
+                </svg>
+                Orders
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'dashboard:customers' %}" class="flex items-center px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'customers' %}bg-blue-600{% else %}hover:bg-gray-800{% endif %} transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0zM15 20H9m6 0h6"></path>
+                </svg>
+                Customers
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'dashboard:reports' %}" class="flex items-center px-4 py-3 rounded-lg {% if request.resolver_match.url_name == 'reports' %}bg-blue-600{% else %}hover:bg-gray-800{% endif %} transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Reports
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Logout Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+          <a href="{% url 'login:logout' %}" class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition w-full">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <div class="lg:ml-64 ml-0 flex-1 flex flex-col transition-all duration-300">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+              <!-- Sidebar Toggle Button -->
+              <button id="sidebarToggle" class="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+              <h1 class="text-2xl font-bold text-gray-900">{% block page_title %}Dashboard{% endblock %}</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span class="text-gray-600">Welcome, <strong>{{ user.username }}</strong></span>
+              <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                {{ user.username|first|upper }}
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1 overflow-auto p-6">
+          {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 border-t border-gray-700 py-6 px-6 text-center text-sm lg:ml-64 transition-all duration-300">
+      <p>&copy; {% now "Y" %} StocketBucket. All rights reserved.</p>
+    </footer>
+
+    <!-- Sidebar Toggle Script -->
+    <script>
+      const sidebar = document.querySelector('aside');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const closeSidebar = document.getElementById('closeSidebar');
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('-translate-x-full');
+        sidebarOverlay.classList.toggle('hidden');
+      }
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', toggleSidebar);
+      }
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+      }
+      if (closeSidebar) {
+        closeSidebar.addEventListener('click', toggleSidebar);
+      }
+    </script>
+  </div>
+</body>
+</html>

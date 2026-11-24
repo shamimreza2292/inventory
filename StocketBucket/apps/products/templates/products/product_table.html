@@ -1,0 +1,160 @@
+
+
+
+<!-- Messages -->
+{% if messages %}
+<div class="mb-6">
+  {% for message in messages %}
+  <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-2">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div id="product-list" class="bg-white rounded-lg shadow overflow-hidden">
+  {% if page_obj %}
+  <table class="w-full">
+    <thead class="bg-gray-100 border-b">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
+          <a href="?sort={% if sort_by == 'code' %}-code{% else %}code{% endif %}{% if query %}&q={{ query }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+            Product Code
+            {% if sort_by == 'code' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/></svg>
+            {% elif sort_by == '-code' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            {% else %}
+              <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+            {% endif %}
+          </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
+          <a href="?sort={% if sort_by == 'name' %}-name{% else %}name{% endif %}{% if query %}&q={{ query }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+            Name
+            {% if sort_by == 'name' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/></svg>
+            {% elif sort_by == '-name' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            {% else %}
+              <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+            {% endif %}
+          </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
+          <a href="?sort={% if sort_by == 'category' %}-category{% else %}category{% endif %}{% if query %}&q={{ query }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+            Category
+            {% if sort_by == 'category' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/></svg>
+            {% elif sort_by == '-category' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            {% else %}
+              <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+            {% endif %}
+          </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
+          <a href="?sort={% if sort_by == 'price' %}-price{% else %}price{% endif %}{% if query %}&q={{ query }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+            Selling Price
+            {% if sort_by == 'price' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/></svg>
+            {% elif sort_by == '-price' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            {% else %}
+              <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+            {% endif %}
+          </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">
+          <a href="?sort={% if sort_by == 'status' %}-status{% else %}status{% endif %}{% if query %}&q={{ query }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="flex items-center gap-1 hover:text-gray-900 transition-colors">
+            Status
+            {% if sort_by == 'status' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5"/></svg>
+            {% elif sort_by == '-status' %}
+              <svg class="w-3.5 h-3.5 text-blue-600 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+            {% else %}
+              <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+            {% endif %}
+          </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in page_obj %}
+      <tr class="border-b hover:bg-gray-50">
+        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ product.product_code }}</td>
+        <td class="px-6 py-4 text-sm text-gray-900">{{ product.name }}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">{{ product.category.name }}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${{ product.selling_price }}</td>
+        <td class="px-6 py-4 text-sm">
+          {% if product.is_active %}
+          <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">Active</span>
+          {% else %}
+          <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">Inactive</span>
+          {% endif %}
+        </td>
+        <td class="px-6 py-4 text-sm">
+          <div class="flex items-center space-x-3">
+            <button
+                    hx-get="{% url 'products:detail'  product.pk %}"
+                    hx-target="#modalContent"
+                    hx-swap="innerHTML"
+                    x-data  @click="$dispatch('open-modal')"
+
+                    type="button" class="openDetailProductModal text-blue-600 hover:text-blue-800 transition-colors" data-product-id="{{ product.pk }}" title="View Product">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </button>
+            <button hx-get="{% url 'products:update' product.pk  %}"
+                    hx-target="#modalContent"
+                    hx-swap="innerHTML"
+                    x-data  @click="$dispatch('open-modal')"  type="button" class="openEditProductModal text-blue-600 hover:text-blue-800 transition-colors" data-product-id="{{ product.pk }}" title="Edit Product">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+
+            <button hx-get="{% url 'products:delete' product.pk  %}"
+                    hx-target="#modalContent"
+                    hx-swap="innerHTML"
+                    x-data  @click="$dispatch('open-modal')"
+
+                    type="button" class="openDeleteProductModal text-red-600 hover:text-red-800 transition-colors" data-product-id="{{ product.pk }}" title="Delete Product">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if page_obj.has_other_pages %}
+  <div class="bg-gray-50 px-6 py-4 flex justify-center gap-2">
+    {% if page_obj.has_previous %}
+    <a href="?page=1{% if query %}&q={{ query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">First</a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Previous</a>
+    {% endif %}
+
+    <span class="px-3 py-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if stock_filter %}&stock={{ stock_filter }}{% endif %}" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Last</a>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="p-6 text-center text-gray-600">
+    <p class="text-lg font-medium">No products found</p>
+    <p class="text-sm mt-2">Create your first product by clicking the "Add Product" button above.</p>
+  </div>
+  {% endif %}
+</div>
+

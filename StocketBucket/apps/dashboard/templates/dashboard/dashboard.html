@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Dashboard - StocketBucket{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Stats Cards -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-600 text-sm font-medium">Total Products</p>
+        <p class="text-3xl font-bold text-gray-900 mt-2">1,234</p>
+      </div>
+      <div class="bg-blue-100 p-3 rounded-full">
+        <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 6H6.28l-.31-1.243A1 1 0 005 4H3z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-600 text-sm font-medium">Total Orders</p>
+        <p class="text-3xl font-bold text-gray-900 mt-2">856</p>
+      </div>
+      <div class="bg-green-100 p-3 rounded-full">
+        <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
+          <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0015.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-600 text-sm font-medium">Total Customers</p>
+        <p class="text-3xl font-bold text-gray-900 mt-2">542</p>
+      </div>
+      <div class="bg-purple-100 p-3 rounded-full">
+        <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 10a9 9 0 11-18 0 9 9 0 0118 0zM18 10a1 1 0 100-2 1 1 0 000 2z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-600 text-sm font-medium">Revenue</p>
+        <p class="text-3xl font-bold text-gray-900 mt-2">$98,234</p>
+      </div>
+      <div class="bg-orange-100 p-3 rounded-full">
+        <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M8.16 2.75a.75.75 0 00-1.32 0l-1.624 4.842H.75a.75.75 0 00-.728.745.749.749 0 00.728.745h3.88l-1.625 4.842a.749.749 0 00.728 1.044.75.75 0 00.672-.379l1.623-4.842 1.624 4.842a.75.75 0 00.672.379.749.749 0 00.728-1.044L7.249 9.25h3.88a.75.75 0 00.728-.745.749.749 0 00-.728-.745H7.249l1.624-4.842z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Welcome Message -->
+<div class="bg-white rounded-lg shadow p-8 text-center">
+  <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome to StocketBucket</h2>
+  <p class="text-gray-600 mb-6">Manage your inventory efficiently with our comprehensive dashboard. Use the sidebar to navigate through different sections of your application.</p>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <a href="{% url 'products:list' %}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition">Products</a>
+    <a href="{% url 'dashboard:orders' %}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">Orders</a>
+    <a href="{% url 'dashboard:customers' %}" class="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-lg transition">Customers</a>
+    <a href="{% url 'dashboard:reports' %}" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg transition">Reports</a>
+  </div>
+</div>
+{% endblock %}

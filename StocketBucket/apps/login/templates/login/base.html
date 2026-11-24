@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Inventory{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 2px solid #d1d5db;
+      font-size: 0.875rem;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+  <div class="min-h-screen flex flex-col">
+    <header class="py-7 px-6">
+      <div class="font-bold text-xl tracking-wide text-white">StocketBucket</div>
+    </header>
+    <main class="flex-1 flex items-center justify-center px-6 py-6">{% block content %}{% endblock %}</main>
+  </div>
+</body>
+</html>

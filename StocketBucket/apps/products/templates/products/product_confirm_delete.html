@@ -1,0 +1,68 @@
+
+
+
+
+
+
+
+{% block content %}
+<div class="{% if not is_ajax %}max-w-md mx-auto mt-12 bg-white rounded-lg shadow p-8{% endif %}">
+  <div class="text-center mb-6">
+    <div class="inline-flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mb-4">
+      <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2M6.343 3.665c.886-.887 2.318-.887 3.203 0l9.757 9.757c.886.886.886 2.318 0 3.203l-9.757 9.757c-.886.887-2.317.887-3.203 0L3.14 16.168c-.886-.887-.886-2.318 0-3.203L6.343 3.665z"></path>
+      </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-2">Delete Product?</h2>
+    <p class="text-gray-600">Are you sure you want to delete this product? This action cannot be undone.</p>
+  </div>
+
+  <!-- Product Summary -->
+  <div class="bg-gray-50 rounded-lg p-4 mb-6">
+    <div class="text-center">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-24 w-24 object-cover rounded mx-auto mb-3">
+      {% endif %}
+      <h3 class="font-semibold text-gray-900">{{ product.name }}</h3>
+      <p class="text-sm text-gray-600">{{ product.product_code }}</p>
+      <p class="text-sm text-gray-600 mt-2">${{ product.selling_price }}</p>
+    </div>
+  </div>
+
+  <!-- Confirmation -->
+  <form method="post"  class="space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="flex items-center">
+        <input type="checkbox" name="confirm" required class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+        <span class="ml-2 text-sm text-gray-700">I understand this action cannot be undone</span>
+      </label>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex gap-3 {% if is_ajax %}hidden{% endif %}">
+      <button
+
+              x-data
+              @click="open = false"
+              type="button"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition text-center">
+
+        Cancel
+      </button>
+<!--      <button type="submit" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition font-medium">Delete Permanently</button>-->
+      <button
+              hx-post="{% url 'products:delete' product.pk %}"
+              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+              hx-target="#product-list"
+              hx-swap="innerHTML"
+              type="button"
+              class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition font-medium"
+      >
+
+        Delete Permanently
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

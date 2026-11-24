@@ -1,0 +1,334 @@
+
+
+{% extends 'base/base.html' %}
+
+
+{% block title %}Products - StocketBucket{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <div  x-data class="flex justify-between items-center mb-6">
+    <h1 class="text-xl font-semibold text-gray-900">Product Management</h1>
+    <button  id="openAddProductModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+            hx-get="/products/create/"
+            hx-target="#modalContent"
+            hx-swap="innerHTML" @click="$dispatch('open-modal')">
+      + Add Product
+    </button>
+  </div>
+
+  <!-- Search and Filter Bar -->
+  <form method="get" class="mb-6">
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="flex-1 flex gap-2">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by product code, name, or barcode..."
+               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">Search</button>
+        {% if query or stock_filter %}
+        <a href="{% url 'products:page' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg transition">Clear</a>
+        {% endif %}
+      </div>
+
+
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 mt-2">
+      <div class="">
+        <label> Filter by category</label>
+        <select name="stock" id="stockFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+          <option value="">All Stock Levels</option>
+          <option value="in_stock" {% if stock_filter == 'in_stock' %}selected{% endif %}>In Stock</option>
+          <option value="out_of_stock" {% if stock_filter == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
+          <option value="low_stock" {% if stock_filter == 'low_stock' %}selected{% endif %}>Low Stock</option>
+          <option value="overstock" {% if stock_filter == 'overstock' %}selected{% endif %}>Overstock</option>
+        </select>
+      </div>
+
+
+      <div class="">
+        <label> Filter by availability</label>
+        <select name="stock" id="stockFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+          <option value="">All Stock Levels</option>
+          <option value="in_stock" {% if stock_filter == 'in_stock' %}selected{% endif %}>In Stock</option>
+          <option value="out_of_stock" {% if stock_filter == 'out_of_stock' %}selected{% endif %}>Out of Stock</option>
+          <option value="low_stock" {% if stock_filter == 'low_stock' %}selected{% endif %}>Low Stock</option>
+          <option value="overstock" {% if stock_filter == 'overstock' %}selected{% endif %}>Overstock</option>
+        </select>
+      </div>
+
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<!-- Products Table -->
+{% include "products/product_table.html" %}
+
+<style>
+  .thin-scrollbar {
+    scrollbar-width: thin;
+  }
+  .thin-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.7);
+  }
+</style>
+
+<!-- Modal -->
+<!--<div >-->
+
+  <div x-data="{ open: false }"
+       @open-modal.window=" open = true"
+       x-init="
+            window.addEventListener('productUpdated', () => {
+                open = false;
+            });
+            window.addEventListener('productCreated', () => {
+                open = false;
+            });
+            window.addEventListener('productDeleted', () => {
+                open = false;
+            });
+       "
+       x-show="open" x-cloak
+       id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center  p-4">
+    <div @click.outside="open = false" class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto thin-scrollbar">
+      <!-- Modal Header -->
+      <div id="modalHeader" class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white flex justify-between items-center border-b">
+        <h2 id="modalTitle" class="text-xl font-semibold">Add Product</h2>
+        <button @click="open = false" type="button" id="closeModalBtn" class="text-white hover:text-gray-200 text-2xl leading-none">&times;</button>
+      </div>
+
+      <!-- Modal Content -->
+      <div id="modalContent" class="p-6">
+        <div class="flex justify-center items-center py-8">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+
+        <!-- Modal Footer -->
+    <!--    <div id="modalFooter" class="sticky bottom-0 bg-gray-50 px-6 py-4 flex justify-end gap-2 border-t">-->
+    <!--      <button type="button" id="cancelModalBtn" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition">Cancel</button>-->
+    <!--      <button type="button" id="submitModalBtn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">Save Product</button>-->
+    <!--    </div>-->
+    </div>
+  </div>
+
+<!--</div>-->
+
+
+
+<!-- Scripts -->
+<script>
+const modal = document.getElementById('productModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalHeader = document.getElementById('modalHeader');
+const modalContent = document.getElementById('modalContent');
+const openAddProductModal = document.getElementById('openAddProductModal');
+// const closeModalBtn = document.getElementById('closeModalBtn');
+// const cancelModalBtn = document.getElementById('cancelModalBtn');
+// const submitModalBtn = document.getElementById('submitModalBtn');
+// const editButtons = document.querySelectorAll('.openEditProductModal');
+const deleteButtons = document.querySelectorAll('.openDeleteProductModal');
+const detailButtons = document.querySelectorAll('.openDetailProductModal');
+const stockFilter = document.getElementById('stockFilter');
+
+// Auto-submit form when stock filter changes
+if (stockFilter) {
+  stockFilter.addEventListener('change', function() {
+    this.closest('form').submit();
+  });
+}
+
+// Close modal
+// function closeModal() {
+//   modal.classList.add('hidden');
+//   modalContent.innerHTML = '';
+// }
+
+// Open modal
+// function openModal(url, isDetail = false) {
+//   modal.classList.remove('hidden');
+//
+//   // Show spinner
+//   modalContent.innerHTML = `
+//     <div class="flex justify-center items-center py-8">
+//       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+//     </div>
+//   `;
+//
+//   // Reset footer and header style
+//
+//   // fetch(url, {
+//   //   headers: {
+//   //     'X-Requested-With': 'XMLHttpRequest'
+//   //   }
+//   // })
+//   //   .then(response => response.text())
+//   //   .then(html => {
+//   //     modalContent.innerHTML = html;
+//   //     if (isDetail) {
+//   //       setupDetailModal();
+//   //     } else {
+//   //       attachFormSubmitListener();
+//   //     }
+//   //   })
+//   //   .catch(error => {
+//   //     console.error('Error:', error);
+//   //     modalContent.innerHTML = '<p class="text-red-600">Error loading content</p>';
+//   //   });
+// }
+
+// Setup Detail Modal
+// function setupDetailModal() {
+//   const modalFooter = document.getElementById('modalFooter');
+//   if (modalFooter) {
+//     modalFooter.classList.add('hidden');
+//   }
+//
+//   const detailContainer = modalContent.querySelector('[data-product-name]');
+//   if (detailContainer) {
+//     modalTitle.textContent = detailContainer.getAttribute('data-product-name');
+//   } else {
+//     modalTitle.textContent = 'Product Details';
+//   }
+//
+//   // Bind events for buttons inside the detail modal
+//   const editBtn = modalContent.querySelector('.edit-product-btn');
+//   if (editBtn) {
+//     editBtn.addEventListener('click', function(e) {
+//       e.preventDefault();
+//       openModal(this.getAttribute('data-url'), false);
+//     });
+//   }
+//
+//   const deleteBtn = modalContent.querySelector('.delete-product-btn');
+//   if (deleteBtn) {
+//     deleteBtn.addEventListener('click', function(e) {
+//       e.preventDefault();
+//       openModal(this.getAttribute('data-url'), false);
+//     });
+//   }
+//
+//   // const closeBtns = modalContent.querySelectorAll('.close-modal-btn');
+//   // closeBtns.forEach(btn => {
+//   //   btn.addEventListener('click', closeModal);
+//   // });
+// }
+
+// Attach form submit listener
+// function attachFormSubmitListener() {
+//   const form = modalContent.querySelector('form');
+//   if (form) {
+//     form.addEventListener('submit', function(e) {
+//       e.preventDefault();
+//
+//       const formData = new FormData(form);
+//       const action = form.getAttribute('action');
+//
+//       fetch(action, {
+//         method: 'POST',
+//         body: formData,
+//         headers: {
+//           'X-Requested-With': 'XMLHttpRequest'
+//         }
+//       })
+//       .then(response => response.json())
+//       .then(data => {
+//         if (data.success) {
+//           // Reload the page to see the updated product list
+//           window.location.reload();
+//         } else {
+//           // Update form with errors
+//           // modalContent.innerHTML = data.html;
+//           // attachFormSubmitListener();
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Error:', error);
+//         modalContent.innerHTML = '<p class="text-red-600">Error submitting form</p>';
+//       });
+//     });
+//
+//     // Update modal styling and title based on action type
+//     const actionAttr = form.getAttribute('action') || '';
+//     const isDelete = actionAttr.includes('/delete/') || form.querySelector('[name="confirm"]');
+//
+//     if (isDelete) {
+//       modalTitle.textContent = 'Delete Product';
+//       submitModalBtn.textContent = 'Delete Permanently';
+//       submitModalBtn.className = 'px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition font-medium';
+//       modalHeader.className = 'sticky top-0 bg-gradient-to-r from-red-600 to-red-700 px-6 py-4 text-white flex justify-between items-center border-b';
+//     } else {
+//       submitModalBtn.textContent = 'Save Product';
+//       submitModalBtn.className = 'px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition';
+//       modalHeader.className = 'sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white flex justify-between items-center border-b';
+//
+//       const productCodeField = form.querySelector('[name="product_code"]');
+//       if (productCodeField && productCodeField.value) {
+//         modalTitle.textContent = 'Edit Product';
+//       } else {
+//         modalTitle.textContent = 'Add Product';
+//       }
+//     }
+//   }
+// }
+
+// Event listeners
+// openAddProductModal.addEventListener('click', function() {
+//   openModal('{% url "products:create" %}', false);
+// });
+
+// editButtons.forEach(button => {
+//   button.addEventListener('click', function() {
+//     const productId = this.getAttribute('data-product-id');
+//     openModal(`{% url "products:update" 0 %}`.replace('0', productId), false);
+//   });
+// });
+
+// deleteButtons.forEach(button => {
+//   button.addEventListener('click', function() {
+//     const productId = this.getAttribute('data-product-id');
+//     openModal(`{% url "products:delete" 0 %}`.replace('0', productId), false);
+//   });
+// });
+
+// detailButtons.forEach(button => {
+//   button.addEventListener('click', function() {
+//     const productId = this.getAttribute('data-product-id');
+//     openModal(`{% url "products:detail" 0 %}`.replace('0', productId), true);
+//   });
+// });
+
+// closeModalBtn.addEventListener('click', closeModal);
+// cancelModalBtn.addEventListener('click', closeModal);
+
+// submitModalBtn.addEventListener('click', function() {
+//   const form = modalContent.querySelector('form');
+//   if (form) {
+//     form.dispatchEvent(new Event('submit'));
+//   }
+// });
+
+// Close modal when clicking outside
+// modal.addEventListener('click', function(e) {
+//   if (e.target === modal) {
+//     closeModal();
+//   }
+// });
+</script>
+{% endblock %}

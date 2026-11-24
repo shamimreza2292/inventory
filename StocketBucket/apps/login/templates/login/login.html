@@ -1,0 +1,30 @@
+{% extends 'login/base.html' %}
+{% block title %}Sign in — Inventory{% endblock %}
+{% block content %}
+<div class="w-full max-w-sm p-6">
+  <form method="post" class="bg-white rounded-xl p-7 shadow-lg flex flex-col gap-3" novalidate>
+    {% csrf_token %}
+    <h2 class="text-xl font-bold text-black mb-1">Sign in</h2>
+    {% if form.non_field_errors %}
+      <div class="bg-red-100 text-red-700 px-3 py-2 rounded-lg text-sm">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <label class="flex flex-col gap-1.5">
+      <span class="text-xs text-gray-600 font-medium">Username</span>
+      {{ form.username }}
+    </label>
+
+    <label class="flex flex-col gap-1.5">
+      <span class="text-xs text-gray-600 font-medium">Password</span>
+      {{ form.password }}
+    </label>
+
+    <label class="flex items-center gap-2 text-sm text-gray-600">
+      <input type="checkbox" name="remember"> Remember me
+    </label>
+
+    <button type="submit" class="bg-black text-white border-none px-3 py-3 rounded-lg font-semibold cursor-pointer mt-1 hover:bg-gray-800 transition">Sign in</button>
+    <p class="text-xs text-gray-600 text-center mt-2">© {% now "Y" %} StocketBucket</p>
+  </form>
+</div>
+{% endblock %}
