@@ -36,7 +36,7 @@ def products_list(request):
             Q(barcode__icontains=query)
         )
 
-    # Stock filter
+    # Stock filter took place
     if stock_filter == 'in_stock':
         products = products.filter(opening_stock__gt=0)
     elif stock_filter == 'out_of_stock':
